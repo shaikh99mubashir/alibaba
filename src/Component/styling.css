@@ -1,0 +1,46 @@
+.pdtTxt{
+    font-weight: bold;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.mfsTxt:hover{
+    color: #ff6a00;
+    cursor: pointer;
+}
+
+.typo{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.maintxtfld{
+    width: 98%;
+}
+.icon{
+    color: black;
+}
+.serchBtn{
+    background-color: #ff6a00;
+    border: none;
+    border-radius: 0px 50px 50px 0px;
+    height: 50%;  
+}
+
+.sliderBtn{
+    background-color: #ff6a00;
+    border: none;
+    color: aliceblue;
+
+}
+
+
+.css-1ptx2yq-MuiInputBase-root-MuiInput-root:after {
+    border-bottom: none !important;
+}
+.css-1ptx2yq-MuiInputBase-root-MuiInput-root:before {
+    border-bottom: none !important;
+}
+fieldset{
+    border: none !important;
+}
