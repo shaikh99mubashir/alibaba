@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import "./styling.css";
-import {Box, Grid, Chip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+import Chip from "@mui/material/Chip";
 import MainCard from "./MainCard";
 const Home = () => {
   const [data, setData] = useState([
@@ -284,18 +285,31 @@ const Home = () => {
     );
     setFilterData([...filteritem]);
   };
-  let selectedSearch=[];
   const selectedSearchItem = (val) => {
-    selectedSearch = data.filter(
-      (x, i) =>{
-        if(x.category === val){
-            return x.category
-        }
-        }
-    );
-    setSelectedItem([...selectedSearch,...selectedItem])
-    console.log('val: '+ val)
-    console.log('selectedSearch :'+ selectedSearch);
+    let array = [...selectedItem];
+    array.push(val);
+    array = [...new Set([...array])];
+
+    setSelectedItem([...array]);
+    let selectedSearch = data.filter((x, i) => {
+      let flag = array.find((item) => item == x.category);
+      if (flag) return x;
+    });
+    setFilterData(selectedSearch);
+  };
+
+  let remove = (ind) => { 
+    selectedItem.splice(ind,1);
+    setSelectedItem([...selectedItem]);
+
+    let arr2 = [];
+
+    selectedItem.forEach((y) => {
+      arr2 = [...arr2, ...data.filter((x) => x.category == y)];
+    });
+
+    setFilterData([...arr2]);
+
   };
 
   useEffect(() => {
@@ -327,7 +341,7 @@ const Home = () => {
             <Chip
               key={i}
               className="mx-1"
-              onClick={()=>selectedSearchItem(e)}
+              onClick={() => selectedSearchItem(e)}
               style={{
                 border: "2px solid #ff6a00",
                 background: "none",
@@ -341,56 +355,41 @@ const Home = () => {
           </button>
         </Box>
       </Grid>
+      <Box>
+        {selectedItem.map((e,i) => {
+          console.log("e.cat " + e);
+          return <Chip label={e} color="primary" onDelete={() => remove(i)} />;
+        })}
+      </Box>
       <Grid container sx={{ backgroundColor: "#eeeeee", paddingLeft: 5 }}>
-         {selectedItem.length?selectedItem.map((e, i) => (
-          <Grid item md={3} sm={6} xs={12}>
-            <Box sx={{ backgroundColor: "#eeeeee", marginTop: 5 }}>
-              <MainCard
-                image={e.image}
-                category={e.category}
-                title={e.title}
-                price={e.price}
-                rate={e.rating.rate}
-              />
-            </Box>
-          </Grid>
-        )):list.map((e, i) => (
-          <Grid item md={4} sm={6} xs={12}>
-            <Box sx={{ backgroundColor: "#eeeeee", marginTop: 5 }}>
-              <MainCard
-                image={e.image}
-                category={e.category}
-                title={e.title}
-                price={e.price}
-                rate={e.rating.rate}
-              />
-            </Box>
-          </Grid>
-        ))}
+        {filterData.length
+          ? filterData.map((e, i) => (
+              <Grid item md={3} sm={6} xs={12}>
+                <Box sx={{ backgroundColor: "#eeeeee", marginTop: 5 }}>
+                  <MainCard
+                    image={e.image}
+                    category={e.category}
+                    title={e.title}
+                    price={e.price}
+                    rate={e.rating.rate}
+                  />
+                </Box>
+              </Grid>
+            ))
+          : data.map((e, i) => (
+              <Grid item md={4} sm={6} xs={12}>
+                <Box sx={{ backgroundColor: "#eeeeee", marginTop: 5 }}>
+                  <MainCard
+                    image={e.image}
+                    category={e.category}
+                    title={e.title}
+                    price={e.price}
+                    rate={e.rating.rate}
+                  />
+                </Box>
+              </Grid>
+            ))}
       </Grid>
-      {/* useEffect(() => {
-if(SelectedCategories.length){
-  setFilterList (listData.filter(e => {
-    let flag = SelectedCategories.find(val => val == e.category)
-    if(flag) return e
-  } ))
-}  
-},[SelectedCategories])
-
-  const clickData = (e) => {
-    // setSelectedCategories(e)
-    if(!SelectedCategories.length) setSelectedCategories([e]);
-    let selectedCategories = SelectedCategories.find(val => e == val )
-    if(selectedCategories) {
-      setSelectedCategories(SelectedCategories.filter(value => value !==e ) )
-    } else {
-      setSelectedCategories([...SelectedCategories, e])
-    } */}
-
-
-
-
-
     </>
   );
 };
