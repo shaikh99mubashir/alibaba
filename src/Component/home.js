@@ -302,13 +302,12 @@ const Home = () => {
     selectedItem.splice(ind,1);
     setSelectedItem([...selectedItem]);
 
-    let arr2 = [];
-
+    let array2 = [];
     selectedItem.forEach((y) => {
-      arr2 = [...arr2, ...data.filter((x) => x.category == y)];
+      array2 = [...array2, ...data.filter((x) => x.category == y)];
     });
 
-    setFilterData([...arr2]);
+    setFilterData([...array2]);
 
   };
 
